@@ -1,0 +1,217 @@
+GUIは「Graphical User Interface」の略です。
+Graphicalはグラフィックや図表などの視覚的なものを指します。
+CUIは「Character User Interface」の略です。
+Characterは文字のことを指します。
+CUIではコマンドで操作を行っていきます。
+
+バージョン管理システムとは
+ファイルの変更履歴を管理するためのシステムです
+
+どのファイルを「誰が」「いつ」「どのように」変更したかを記録することができます。
+ひとまずはソースコードの管理のために使われるシステムがバージョン管理システムで Git はその一種
+
+ Git は分散型バージョン管理システムと呼ばれています。開発者が自分の開発環境で変更履歴を保存することができる。
+
+
+●ローカルリポジトリの作成
+現在から一つ移動できる
+cd 「移動したいファイル」
+cd - で一個前に戻る
+
+現在の場所がわかるコマンド
+ls
+
+移動したら
+git init　を実行後
+ls -a で確認したときにファイルのルートディレクトリ直下に .git というディレクトリが作成されていたらOK
+
+Git管理状態を確認するときのコマンド
+git status
+ーーーーーーーーーーーーーーーーーーー
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+    css/
+    img/
+    index.html
+    js/
+
+nothing added to commit but untracked files present (use "git add" to track)
+ーーーーーーーーーーーーーーーーーーー
+↑こんな感じがでてきたらOK
+
+On branch master
+今masterブランチにいることを示している
+
+No commits yet
+まだコミットがされていない状態を示しています。commitは変更履歴を残すためのもの
+
+
+
+
+
+●git addで変更内容を保存したいファイルを選択する
+
+git add .
+git addの後にStagingしたいファイルを指定することでそのファイルを addする(Stagingする) ことができます。 . (ドット) つけてあげることで全Untracked filesをStagingすることができます。
+
+ーーーーーーーーーーーーーーーーーーーー
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+    new file:   css/bootstrap.min.css
+    new file:   css/style.css
+    new file:   img/ph_beaf.jpg
+    new file:   index.html
+    new file:   js/bootstrap.bundle.min.js
+    new file:   js/jquery-3.3.1.min.js
+    new file:   js/main.js
+ーーーーーーーーーーーーーーーーーーーーー
+↑
+Changes to be committed:　下記のファイル群はコミットする準備が完了しています。(Stagingできています)」という意味
+
+
+
+
+●git commitで変更内容を保存する
+
+git commit -m 'first commit'
+ーーーーーーーーーーーーーーーーーーーーー
+[master (root-commit) 00f6039] first commit
+ 7 files changed, 276 insertions(+)
+ create mode 100755 css/bootstrap.min.css
+ create mode 100644 css/style.css
+ create mode 100644 img/ph_beaf.jpg
+ create mode 100644 index.html
+ create mode 100755 js/bootstrap.bundle.min.js
+ create mode 100644 js/jquery-3.3.1.min.js
+ create mode 100644 js/main.js
+ーーーーーーーーーーーーーーーーーーーーー
+履歴がどんな編集を行なったのかを示すメッセージ「コミットメッセージ」を描く
+
+git commit -m 'どう編集したかをメッセージとして書く'
+
+commit完了
+＊今はローカルリポジトリにのみ変更内容が保存されており、リモートリポジトリにはされていない。
+
+再度Gitの管理状態をgit statu確認してみて
+On branch master
+nothing to commit, working tree clean
+となって入ればOK
+
+コミットが残せているかを確認する
+git log
+ーーーーーーーーーーーーーー
+commit 00f603955b42747585db4b67381a9c312c8a765f (HEAD -> master)
+Author: your_name <your@example.com>
+Date:   Mon Dec 14 17:41:36 2020 +0900
+
+    first commit
+
+・コミットID
+・編集者名
+・コミットした日時
+・コミットメッセージ　と上から順に書いてある
+ーーーーーーーーーーーーーー
+ログを見たら　q でgitbashに戻りましょう。
+
+
+
+
+●git remote addでローカルリポジトリとリモートリポジトリを紐付ける
+リモートリポジトリ・ローカルリポジトリのそれぞれのリポジトリがそれぞれ独立していてまだ何も関係していない
+
+git remote add origin githubでコピーしたURL
+↑でローカルリポジトリにリモートを登録することができました
+
+git remote -v
+↑ローカルリポジトリにリモートを登録することができた確認
+ーーーーーーーーーーーーーーーー
+origin    https://github.com/kazunoriboy/wagyu_price.git (fetch)
+origin    https://github.com/kazunoriboy/wagyu_price.git (push)
+ーーーーーーーーーーーーーーーーー
+とでればOK
+orizinはリモートリポジトリの意味。そのあとに自分のリモートリポジトリのURLが表示される。
+
+
+
+
+
+●git pushでローカルリポジトリの内容をリモートリポジトリに反映する
+
+これからローカルの内容をリモートにアップしていきますが、その作業のことをGitでは Push という
+
+git push origin master
+↑現在のブランチの内容をリモートのmasterブランチに Push するという意味
+ーーーーーーーーーーーーーーー
+Enumerating objects: 12, done.
+Counting objects: 100% (12/12), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (12/12), 471.48 KiB | 18.86 MiB/s, done.
+Total 12 (delta 0), reused 0 (delta 0)
+To https://github.com/kazunoriboy/wagyu_price.git
+ * [new branch]      master -> master
+ーーーーーーーーーーーーーーー
+↑がでたらOK
+
+●addとcommit
+git status　を行うと
+ーーーーーーーーーーーーーーー
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+    modified:   index.html　　←Sstagingされていないもの。
+
+no changes added to commit (use "git add" and/or "git commit -a")
+ーーーーーーーーーーーーーーー
+
+git diff　変更した差分が表示される
+ーは変更前　＋は変更後
+
+git add index.html
+変更したものをまずaddさせる
+ーーーーーーーーーーーーーーーー
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+    modified:   index.html
+ーーーーーーーーーーーーー
+↑addを完了させる。
+
+git commit -m 'index.htmlの1列目のカードの表示名を変更'
+↑一目で変更内容がわかるよう変更点を描く
+
+git log　変更できているか確認
+
+git push origin master　 commitしたものをpishする
+ふぃ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
